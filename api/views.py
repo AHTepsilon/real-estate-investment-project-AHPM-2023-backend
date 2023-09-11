@@ -5,11 +5,24 @@ from .serializers import InfoSerializer, ShowInfoSerializer
 from .models import Scraper
 from rest_framework.views import APIView
 from rest_framework.response import Response
+import requests
+from bs4 import BeautifulSoup
 
 def post_data(request):
+
+    url = 'https://www.elpais.com.co/cali/habra-solucion-a-los-lios-ocasionados-por-obra-del-mio-en-valle-del-lili-abandonada-hace-mas-de-6-anos-0853.html'
+
+    response = requests.get(url)
+
+    if response.status_code == 200:
+        soup = BeautifulSoup(response.text, 'html.parser')
+        title_element = soup.find('h1', class_='text-smoke-700')
+        title = title_element.text.strip() if title_element else 'No encontrado'
+
     data = {
         'mensaje': 'Este es el mensaje enviado desde Django',
         'info': 'informacion recibida con exito',
+        'scraped': title,
     }
 
     return JsonResponse(data)
