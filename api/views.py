@@ -38,11 +38,9 @@ def post_data(request):
 @csrf_exempt
 def get_data(request):
     if request.method == "POST":
-        data_received = json.loads(request.body.decode('utf-8'))
-        first_name = data_received.get('firstName')
-        last_name = data_received.get('lastName')
-
         return JsonResponse({"mensaje": "Datos recibidos correctamente"})
+    elif request.method == "GET":
+        return JsonResponse({"mensaje": "Esta es una solicitud GET"})
     else:
         return JsonResponse({"error": "Método no permitido"}, status=405)
 
